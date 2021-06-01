@@ -1,6 +1,4 @@
 <?php
-
-
 class Category
 {
   private $id;
