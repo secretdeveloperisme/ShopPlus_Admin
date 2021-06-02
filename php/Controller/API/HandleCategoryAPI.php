@@ -10,9 +10,9 @@
   }
   if(isset($_POST["action"]) && !empty($_POST["action"])){
     include("../../Controller/HandleCategory.php");
-    if ($_POST["action"] == "insertCategory" && isset($_POST["categoryID"]) && !empty($_POST["categoryID"])){
+    if ($_POST["action"] == "insertCategory"){
       if((isset($_POST["categoryName"])&&!empty($_POST["categoryName"]))){
-        echo json_encode(insertCategory(new Category(0,$_POST["categoryName"],$_POST["categoryID"])));
+        echo json_encode(insertCategory(new Category(0,$_POST["categoryName"])));
       }
     }
     if ($_POST["action"] == "deleteCategory" && isset($_POST["categoryID"]) && !empty($_POST["categoryID"])){

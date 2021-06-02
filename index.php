@@ -5,7 +5,7 @@
     $valid = isExistStaff($_POST["userName"]);
     if($valid == true){
         $_SESSION["id"] = $_POST["userName"];
-        header("Location: admin/dashboard/index.html");
+        header("Location: admin/dashboard/index.php");
     }
   }
 ?>
