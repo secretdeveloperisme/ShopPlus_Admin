@@ -20,7 +20,7 @@
     }
     if ($_POST["action"] == "updateCategory" && isset($_POST["categoryID"]) && !empty($_POST["categoryID"])){
       if((isset($_POST["categoryName"])&&!empty($_POST["categoryName"]))){
-        echo json_encode(updateCustomerAddress(new Category($_POST["categoryName"],$_POST["categoryName"])));
+        echo json_encode(updateCategory(new Category($_POST["categoryID"],$_POST["categoryName"])));
       }
     }
   }

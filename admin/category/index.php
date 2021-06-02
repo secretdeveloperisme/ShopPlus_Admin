@@ -35,7 +35,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-success" id="btnAddCategory">Thêm</button>
-          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-danger"  data-dismiss="modal">Close</button>
         </div>
       </div>
     </div>
@@ -48,10 +48,10 @@
           <button type="button" class="close" data-dismiss="modal">&times;</button>
         </div>
         <div class="modal-body">
-          <input type="text" name="" id="" class="form-control" >
+          <input type="text" name="" id="inputEditDataCategory" class="form-control" >
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-success">Sửa</button>
+          <button type="button" class="btn btn-success" id="btnCommitEdit">Sửa</button>
           <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
         </div>
       </div>
@@ -77,7 +77,7 @@
           <h1>Category</h1>
           <div class="btn-group">
             <button type="button" id="btnAddCategory" data-toggle="modal" data-target="#addModal" class="btn bg-primary text-white"><i class="fas fa-plus"></i> ADD</button>
-            <button id="btnDeleteCategory" class="btn bg-danger text-white"><i class="fas fa-minus"></i> DELETE</button>
+            <button class="btn bg-danger text-white" id="btnDeleteCategory"s><i class="fas fa-minus"></i> DELETE</button>
           </div>
         </div>
         <table class="table table-striped table-hover" id="categoryTable">
