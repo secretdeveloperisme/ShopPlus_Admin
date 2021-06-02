@@ -7,6 +7,10 @@
     if ($_GET["action"] == "getNumberOfCategory"){
       echo json_encode(getNumberOfCategory());
     }
+    if ($_GET["action"] == "getCategoryWithProduct"){
+      if(isset($_GET["id"])&&!empty($_GET["id"]))
+        echo json_encode(getCategoryWithIdProduct($_GET["id"]));
+    }
   }
   if(isset($_POST["action"]) && !empty($_POST["action"])){
     include("../../Controller/HandleCategory.php");
