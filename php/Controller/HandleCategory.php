@@ -49,4 +49,18 @@
     }
     return $numberOfCategory;
   }
+  function getCategoryWithIdProduct($id)
+  {
+    $result = $GLOBALS["connect"]->query("
+          SELECT TENLOAIHANG FROM LOAIHANGHOA
+          INNER JOIN HANGHOA ON LOAIHANGHOA.MALOAIHANG = HANGHOA.MALOAIHANG
+          WHERE MSHH = $id
+      ");
+    if ($result->num_rows > 0) {
+      $row = $result->fetch_assoc();
+      return $row["TENLOAIHANG"];
+    }
+    else
+      return "Không có loại hàng";
+}
 ?>
