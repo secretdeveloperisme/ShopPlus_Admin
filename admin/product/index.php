@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,71 +10,70 @@
   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" referrerpolicy="no-referrer"></script>
+  <script src="../../js/base.js"></script>
   <script src="../../js/product.js"></script>
   <title>Product</title>
 </head>
 <body>
-  <div class="modal fade" id="addProduct">
+  <div id="toast"></div>
+  <div class="modal fade" id="addProductModal">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header">
           <h4 class="modal-title">Thêm Sản Phẩm</h4>
           <button type="button" class="close" data-dismiss="modal">&times;</button>
         </div>
-        <div class="row">
-          <div class="col-xl-7">
-            <div class="modal-body">
-              <div class="form-group">
-                <label for="">Tên Hàng Hóa</label>
-                <input type="text" name="" id="" class="form-control">
-              </div>
-              <select id="" class="custom-select mb-3">
-                <option selected value="">Quy Cách</option>
-                <option value="Quyễn">Quyễn</option>
-                <option value="Quyễn">Cái</option>
-                <option value="Quyễn">Hộp</option>
-              </select>
-              <div class="input-group form-group">
-                <input type="number" class="form-control" placeholder="Giá Sản Phẩm">
-                <div class="input-group-prepend">
-                  <span class="input-group-text">đ</span>
+        <div class="modal-body">
+          <form class="row" id="formAdd">
+            <div class="col-xl-7">
+                <div class="form-group">
+                  <label for="">Tên Hàng Hóa</label>
+                  <input type="text" name="name" id="nameAddProduct" class="form-control">
                 </div>
-              </div>
+                <select id="unitAddProduct" name="unit" class="custom-select mb-3">
+                  <option selected value="">Quy Cách</option>
+                  <option value="Quyễn">Quyễn</option>
+                  <option value="Cái">Cái</option>
+                  <option value="Hộp">Hộp</option>
+                </select>
+                <div class="input-group form-group">
+                  <input type="number" name="price" id="priceAddProduct" class="form-control" placeholder="Giá Sản Phẩm">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">đ</span>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="">Số Lượng</label>
+                  <input type="number" name="amount" id="amountAddProduct" class="form-control">
+                </div>
+            </div>
+            <div class="col-xl-5 p-xl-5">
+              <select name="categoryID" id="categoryAddProduct" class="custom-select mb-3">
+                <option value="">Loại Hàng</option>
+              </select>
               <div class="form-group">
-                <label for="">Số Lượng</label>
-                <input type="number" name="" id="" class="form-control">
+                <div class="custom-file mb-3">
+                  <input type="file" name="imageAddProduct" class="custom-file-input" accept="image/*" id="imgFile">
+                  <label class="custom-file-label" for="imgFile">Chọn Hình ảnh</label>
+                </div>
+                <img class="border-danger img-thumbnail" id="displayImgFile" style="width: 128px; height: 128px; object-fit: contain;">
               </div>
             </div>
-          </div>
-          <div class="col-xl-5 p-xl-5">
-            <select name="" id="" class="custom-select mb-3">
-              <option value="">Loại Hàng</option>
-              <option value="1">Máy Tính</option>
-              <option value="2">Máy Tính</option>
-              <option value="3">Máy Tính</option>
-            </select>
-            <div class="form-group">
-              <div class="custom-file mb-3">
-                <input type="file" class="custom-file-input" accept="image/*" id="imgFile">
-                <label class="custom-file-label" for="imgFile">Chọn Hình ảnh</label>
-              </div>
-              <img class="border-danger img-thumbnail" id="displayImgFile" style="width: 128px; height: 128px; object-fit: contain;">
-              </img>
-            </div>
-          </div>
+          </form>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-success">Thêm</button>
+          <button type="button" class="btn btn-success" id="btnAddProduct">Thêm</button>
           <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
         </div>
       </div>
     </div>
   </div>
-  <div class="modal fade" id="editModal">
+  <div class="modal fade" id="editProductModal">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header">
-          <h4 class="modal-title">Thêm Sản Phẩm</h4>
+          <h4 class="modal-title">Sửa Sản Phẩm</h4>
           <button type="button" class="close" data-dismiss="modal">&times;</button>
         </div>
         <div class="row">
@@ -102,11 +102,8 @@
             </div>
           </div>
           <div class="col-xl-5 p-xl-5">
-            <select name="" id="" class="custom-select mb-3">
+            <select name="" id="categoryEditProduct" class="custom-select mb-3">
               <option value="">Loại Hàng</option>
-              <option value="1">Máy Tính</option>
-              <option value="2">Máy Tính</option>
-              <option value="3">Máy Tính</option>
             </select>
             <div class="form-group">
               <div class="custom-file mb-3">
@@ -144,11 +141,11 @@
         <div class="header d-flex justify-content-between">
           <h1>Product</h1>
           <div class="btn-group">
-            <button type="button" id="btnAddCategory" data-toggle="modal" data-target="#addProduct" class="btn bg-primary text-white"><i class="fas fa-plus"></i> ADD</button>
+            <button type="button" id="btnAddCategory" data-toggle="modal" data-target="#addProductModal" class="btn bg-primary text-white"><i class="fas fa-plus"></i> ADD</button>
             <button id="btnDeleteCategory" class="btn bg-danger text-white"><i class="fas fa-minus"></i> DELETE</button>
           </div>
         </div>
-        <table class="table table-striped table-hover mt-2">
+        <table class="table table-striped table-hover mt-2 " id="productTable">
           <thead>
             <tr>
               <th scope="col">Check</th>
@@ -161,43 +158,10 @@
               <th scope="col">Loại Hàng</th>  
               <th scope="col">Edit</th> 
             </tr>
-            <tbody>
-              <tr>
-                <td scope="row"><input type="checkbox" class="custom-checkbox"></td>
-                <td>1</td>
-                <td>Marketing Plan - Bản Phác Thảo Kế Hoạch Marketing</td>
-                <td><img src="/ShopPlus_Customer/assets/images/products/04ffa4c4673af50ef2e594bf8e4f6fa1.jpg" alt="picture" class="img-thumbnail" style="width: 64px; height: 64px;" ></td>
-                <td>Quyễn</td>
-                <td>284,000 đ</td>
-                <td>10</td>
-                <td>Sách</td>
-                <td><button type="button" class="btn btn-info" data-toggle="modal" data-target="#editModal">edit</button></td>
-              </tr>
-              <tr>
-                <td scope="row"><input type="checkbox" class="custom-checkbox"></td>
-                <td>1</td>
-                <td>Marketing Plan - Bản Phác Thảo Kế Hoạch Marketing</td>
-                <td><img src="/ShopPlus_Customer/assets/images/products/04ffa4c4673af50ef2e594bf8e4f6fa1.jpg" alt="picture" class="img-thumbnail" style="width: 64px; height: 64px;"></td>
-                <td>Quyễn</td>
-                <td>284,000 đ</td>
-                <td>10</td>
-                <td>Sách</td>
-                <td><button type="button" class="btn btn-info" data-toggle="modal" data-target="#editModal">edit</button></td>
-              </tr>
-              <tr>
-                <td scope="row"><input type="checkbox" class="custom-checkbox"></td>
-                <td>1</td>
-                <td>Marketing Plan - Bản Phác Thảo Kế Hoạch Marketing</td>
-                <td><img src="/ShopPlus_Customer/assets/images/products/04ffa4c4673af50ef2e594bf8e4f6fa1.jpg" alt="picture" class="img-thumbnail" style="width: 64px; height: 64px;"></td>
-                <td>Quyễn</td>
-                <td>284,000 đ</td>
-                <td>10</td>
-                <td>Sách</td>
-                <td><button type="button" class="btn btn-info" data-toggle="modal" data-target="#editModal">edit</button></td>
-              </tr>
-              
-            </tbody>
           </thead>
+            <tbody>
+            </tbody>
+
         </table>
       </div>
     </div>
