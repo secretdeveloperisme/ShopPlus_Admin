@@ -55,6 +55,10 @@
   {
       $this->unit = $unit;
   }
+
+  public function getUnit() {
+    return $this->unit;
+  }
   public function setPrice($price)
   {
       $this->price = $price;
