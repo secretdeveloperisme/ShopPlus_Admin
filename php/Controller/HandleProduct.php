@@ -47,6 +47,27 @@
     else 
       return null;
   }
+function insertProduct($product){
+  $prepare = $GLOBALS["connect"]->prepare("INSERT INTO hanghoa( TENHH, LOCATION, QUYCACH, GIA, SOLUONGHANG, MALOAIHANG, GHICHU) VALUES (?,?,?,?,?,?,?)");
+  $name = $product->getName();
+  $amount = $product->getAmount();
+  $location = $product->getLocation();
+  $unit = $product->getUnit();
+  $price = $product->getPrice();
+  $categoryID = $product->getCategoryId();
+  $note = $product->getNote();
+  $prepare->bind_param("sssiiis",$name,$location,$unit,$price,$amount,$categoryID,$note);
+  if($prepare->execute()){
+    $prepare->close();
+    $GLOBALS["connect"]->close();
+    return true;
+  }
+  else{
+    $prepare->close();
+    $GLOBALS["connect"]->close();
+    return false;
+  }
+}
   function getCategoryWithIdProduct($id)
   {
     $result = $GLOBALS["connect"]->query("
