@@ -68,6 +68,61 @@ function insertProduct($product){
     return false;
   }
 }
+function updateProduct($product){
+  $prepare = $GLOBALS["connect"]->prepare("
+        UPDATE HANGHOA 
+        SET TENHH = ? , LOCATION = ?, QUYCACH = ?, GIA = ? ,SOLUONGHANG = ?, MALOAIHANG = ?, GHICHU = ?
+        WHERE MSHH = ?
+   ");
+  $name = $product->getName();
+  $amount = $product->getAmount();
+  $location = $product->getLocation();
+  $unit = $product->getUnit();
+  $price = $product->getPrice();
+  $categoryID = $product->getCategoryId();
+  $note = $product->getNote();
+  $id = $product->getId();
+  $prepare->bind_param("sssiiisi",$name,$location,$unit,$price,$amount,$categoryID,$note,$id);
+  if($prepare->execute()){
+    $prepare->close();
+    $GLOBALS["connect"]->close();
+    return true;
+  }
+  else{
+    $prepare->close();
+    $GLOBALS["connect"]->close();
+    return false;
+  }
+}
+function updateProductWithoutLocation($product){
+  $prepare = $GLOBALS["connect"]->prepare("
+        UPDATE HANGHOA 
+        SET TENHH = ? ,QUYCACH = ?, GIA = ? ,SOLUONGHANG = ?, MALOAIHANG = ?, GHICHU = ?
+        WHERE MSHH = ?
+   ");
+  $name = $product->getName();
+  $amount = $product->getAmount();
+  $unit = $product->getUnit();
+  $price = $product->getPrice();
+  $categoryID = $product->getCategoryId();
+  $note = $product->getNote();
+  $id = $product->getId();
+  $prepare->bind_param("ssiiisi",$name,$unit,$price,$amount,$categoryID,$note,$id);
+  if($prepare->execute()){
+    $prepare->close();
+    $GLOBALS["connect"]->close();
+    return true;
+  }
+  else{
+    $prepare->close();
+    $GLOBALS["connect"]->close();
+    return false;
+  }
+}
+  function deleteProduct($productID){
+    $result = $GLOBALS["connect"]->query("DELETE FROM HANGHOA WHERE MSHH = $productID");
+    return $result;
+  }
   function getCategoryWithIdProduct($id)
   {
     $result = $GLOBALS["connect"]->query("
@@ -82,4 +137,5 @@ function insertProduct($product){
     else
       return "Không có loại hàng";
   }
+
 ?>

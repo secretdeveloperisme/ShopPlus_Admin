@@ -171,3 +171,11 @@ function getQueryStringURLasObject(){
   let  search = location.search.substring(1);
   return JSON.parse('{"' + decodeURI(search).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g,'":"') + '"}')
 }
+function setSelectedValue(selectObj, valueToSet) {
+  for (let i = 0; i < selectObj.options.length; i++) {
+    if ($(selectObj.options[i]).attr("value") == valueToSet) {
+      selectObj.options[i].selected = true;
+      return;
+    }
+  }
+}

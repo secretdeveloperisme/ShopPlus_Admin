@@ -1,27 +1,34 @@
 $(()=>{
   //change label image file input file 
   let $imgFile = $("#imgFile")
+  let $imgFileEditProduct = $("#imgFileEditProduct")
   $imgFile.on("change", function (event) {
     let imgName = $(this).val().split("\\").pop()
     $(this).siblings(".custom-file-label").addClass("selected").html(imgName)
-    readerImage(event)
+    readerImage(event,$displayImgFile)
+  });
+  $imgFileEditProduct.on("change", function (event) {
+    let imgName = $(this).val().split("\\").pop()
+    $(this).siblings(".custom-file-label").addClass("selected").html(imgName)
+    readerImage(event,$displayEditFile)
   });
   //display image when input image file change
   let $displayImgFile = $("#displayImgFile")
-  function readerImage(event){
+  let $displayEditFile = $("#displayEditImgFile")
+  function readerImage(event,$displayImage){
     let input = event.target 
     let reader = new FileReader()
     reader.onload = ()=>{
       let dataURL = reader.result;
-      $displayImgFile.attr("src",dataURL)
+      $displayImage.attr("src",dataURL)
     }
     reader.readAsDataURL(input.files[0]);
   }
   //
 
   let $editModal = $("#editProductModal")
-  let $categoryTable = $("#productTable")
-  let $categoryBody = $categoryTable.find("tbody")
+  let $productTable = $("#productTable")
+  let $categoryBody = $productTable.find("tbody")
   //render category Table
   function renderProductTable(){
     $categoryBody.html("")
@@ -51,25 +58,22 @@ $(()=>{
             }
           })
           let row =`
-         <tr>
+         <tr rowID="${value.id}">
             <td scope="row"><input type="checkbox" class="custom-checkbox" productID="${value.id}"></td>
-            <td>${value.id}</td>
-            <td>${value.name}</td>
-            <td><img src="${value.location}" alt="picture" class="img-thumbnail" style="width: 64px; height: 64px;" ></td>
-            <td>${value.unit}</td>
-            <td>${numberWithCommas(value.price)} đ</td>
-            <td>${value.amount}</td>
-            <td>${categoryName}</td>
-            <td><button type="button" class="btn btn-info" data-toggle="modal" data-target="#editProductModal">edit</button></td>
+            <td role="id">${value.id}</td>
+            <td role="name">${value.name}</td>
+            <td role="location"><img src="${value.location}" alt="picture" class="img-thumbnail" style="width: 64px; height: 64px;" ></td>
+            <td role="unit">${value.unit}</td>
+            <td role="price" price="${value.price}">${numberWithCommas(value.price)} đ</td>
+            <td role="amount">${value.amount}</td>
+            <td role="categoryID" categoryID="${value.categoryId}">${categoryName}</td>
+            <td role="btnEdit"><button type="button" class="btn btn-info" data-toggle="modal" data-target="#editProductModal">edit</button></td>
           </tr>
         `
           $categoryBody.html((index,current)=>{
             return current + row;
           })
-
         })
-
-
       }
     })
     initEditEvent()
@@ -119,6 +123,7 @@ $(()=>{
             type : "success",
             duration : 5000
           })
+          renderProductTable()
         }
         else
           toast({
@@ -129,107 +134,92 @@ $(()=>{
           })
     }
     xmlHTTP.send(addFormData)
-    // $.ajax({
-    //   url : "/ShopPlus_Admin/php/Controller/API/HandleProductAPI.php",
-    //   type : "POST",
-    //   data : {
-    //     action : "insertCategory",
-    //     categoryName :
-    //   },
-    //   success : (responses)=>{
-    //     if(responses.trim() === "true"){
-    //       toast({
-    //         title : "Thành Công",
-    //         message : "Thêm Thành Công",
-    //         type : "success",
-    //         duration : 4000
-    //       })
-    //       $inputDataCategory.val("");
-    //       renderProductTable()
-    //     }
-    //     else
-    //       toast({
-    //         title : "Thất Bại",
-    //         message : "Tên Hàng Hóa Không Được Để trống",
-    //         type : "error",
-    //         duration : 4000
-    //       })
-    //   }
-    // })
   })
   //edit event
   function initEditEvent(){
-    let $btnCategoryEdits = $categoryBody.find("[role='btnEdit']")
-    $btnCategoryEdits.each((index,element)=>{
-      let id = $(element).parent().siblings().filter("[role=id]").text()
+    let $btnEditProducts = $categoryBody.find("[role='btnEdit']").find("button")
+    $btnEditProducts.each((index,element)=>{
+      let $tdBtnEdit = $(element).parent();
+      let id = $tdBtnEdit.parent().attr("rowID");
+      let name = $tdBtnEdit.siblings("[role=name]").text()
+      let location = $tdBtnEdit.siblings("[role=location]").children().attr("src")
+      let price = $tdBtnEdit.siblings("[role=price]").attr("price")
+      let amount = $tdBtnEdit.siblings("[role=amount]").text()
+      let categoryID = $tdBtnEdit.siblings("[role=categoryID]").attr("categoryID")
+      let unit = $tdBtnEdit.siblings("[role=unit]").text().trim()
       $(element).on("click",(event)=>{
-        $editModal.prop("categoryID",id);
-        $inputEditDataCategory.val($(element).parent().siblings("[role=name]").text())
+        $editModal.prop("productID",id);
+        $("#nameEditProduct").val(name)
+        $("#priceEditProduct").val(price)
+        $displayEditFile.attr("src",location)
+        $("#amountEditProduct").val(amount)
+        setSelectedValue($("#categoryEditProduct")[0],categoryID)
       })
     })
   }
   //init edit button commit
   let $btnCommitEdit = $("#btnCommitEdit");
   $btnCommitEdit.click((event)=>{
-    if($inputEditDataCategory.val() === "")
-    {
-      toast({
-        title : "Thất Bại",
-        message : "Không Được Để trống",
-        type : "error",
-        duration : 5000
-      })
-      return false
-    }
-    $.ajax({
-      url : "/ShopPlus_Admin/php/Controller/API/HandleProductAPI.php",
-      type : "POST",
-      data : {
-        action : "updateCategory",
-        categoryName: $inputEditDataCategory.val(),
-        categoryID : $editModal.prop("categoryID")
-      },
-      dataType : "text",
-      success : (response)=>{
-        if(response.trim() === "true"){
+    // if($inputEditDataCategory.val() === "")
+    // {
+    //   toast({
+    //     title : "Thất Bại",
+    //     message : "Không Được Để trống",
+    //     type : "error",
+    //     duration : 5000
+    //   })
+    //   return false
+    // }
+    let addForm = $("#editForm")[0];
+    let addFormData = new FormData(addForm);
+    addFormData.append("action","updateProduct")
+    addFormData.append("id",$editModal.prop("productID"))
+    let xmlHTTP = new XMLHttpRequest();
+    xmlHTTP.open("POST","/ShopPlus_Admin/php/Controller/API/HandleProductAPI.php")
+    xmlHTTP.onload = (e) =>{
+      if(e.currentTarget.readyState === 4 && e.currentTarget.status === 200){
+        console.log(e.currentTarget.responseText)
+        if(e.currentTarget.responseText.trim() === "true"){
           toast({
             title : "Thành Công",
-            message : `Bạn đã Cập Nhật Thành Công`,
+            message : "Sửa Sản Phẩm Thành Công",
             type : "success",
             duration : 5000
           })
-          $editModal.modal("hide")
           renderProductTable()
         }
         else
           toast({
-            title : "Thất bại",
-            message : "Cập Nhật Thất Bại",
+            title : "Thất Bại",
+            message : "Sửa Sản Phẩm Thất Bại",
             type : "error",
             duration : 5000
           })
       }
-    })
+    }
+    xmlHTTP.send(addFormData)
   })
   //init delete event
-  let $btnDeleteCategory = $("#btnDeleteCategory")
-  $btnDeleteCategory.click((event)=>{
-    let $selectRow = $categoryTable.find("[type=checkbox]");
+  let $btnDeleteProduct = $("#btnDeleteProduct")
+  $btnDeleteProduct.click((event)=>{
+    let $selectRow = $productTable.find("[type=checkbox]");
     $selectRow.each((index,element)=>{
       if ($(element).prop("checked")){
+        console.log($(element).parent().parent().attr("rowid"))
         $.ajax({
           url : "/ShopPlus_Admin/php/Controller/API/HandleProductAPI.php",
           type : "POST",
           data : {
-            action : "deleteCategory",
-            categoryID: $(element).parent().siblings("[role=id]").text()
+            action : "deleteProduct",
+            productID: $(element).parent().parent().attr("rowid")
           },
           dataType : "text",
           success : (response)=>{
+            console.log(response)
             if(response.trim() === "true"){
               toast({
                 title : "Thành Công",
-                message : "Xóa sản Phẩm có id : "+ $(element).parent().siblings("[role=id]").text() + " thành công" ,
+                message : "Xóa sản Phẩm có id : "+ $(element).parent().parent().attr("rowid") + " thành công" ,
                 type : "success",
                 duration : 5000
               })
@@ -238,7 +228,7 @@ $(()=>{
             else
               toast({
                 title : "Thất Bại",
-                message : "Xóa sản Phẩm có id : "+ $(element).parent().siblings("[role=id]").text() + " thất bại",
+                message : "Xóa sản Phẩm có id : "+ $(element).parent().parent().attr("rowid") + " thất bại",
                 type : "error",
                 duration : 5000
               })
