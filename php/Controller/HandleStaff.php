@@ -6,7 +6,7 @@
   $connect = connectDB();
   function getStaffViaID($id){
     $result = $GLOBALS["connect"]->query(
-      "SELECT MSNV,HOTENNV,CHUCVU,DIACHI,SODIENTHOAI FROM NHANVIEN WHERE MSNV = $id");
+      "SELECT MSNV,HOTENNV,CHUCVU,DIACHI,SODIENTHOAI FROM nhanvien WHERE MSNV = $id");
     if($result->num_rows > 0){
       $row = $result->fetch_assoc();
       return new Staff(
@@ -20,7 +20,7 @@
   }
   function getAllStaffs(){
     $result = $GLOBALS["connect"]->query(
-      "SELECT MSNV,HOTENNV,CHUCVU,DIACHI,SODIENTHOAI FROM NHANVIEN");
+      "SELECT MSNV,HOTENNV,CHUCVU,DIACHI,SODIENTHOAI FROM nhanvien");
     $staffs = array();
     if($result->num_rows > 0){
       while ($row = $result->fetch_assoc()){
@@ -49,7 +49,7 @@
       return false;
   }
   function insertStaff($staff){
-    $prepare = $GLOBALS["connect"]->prepare("INSERT INTO NHANVIEN(HOTENNV,CHUCVU,DIACHI,SODIENTHOAI)VALUES(?,?,?,?)");
+    $prepare = $GLOBALS["connect"]->prepare("INSERT INTO nhanvien(HOTENNV,CHUCVU,DIACHI,SODIENTHOAI)VALUES(?,?,?,?)");
     $name = $staff->getName();
     $position = $staff->getPosition();
     $address = $staff->getAddress();
@@ -68,7 +68,7 @@
   }
 function updateStaff($staff){
   $prepare = $GLOBALS["connect"]->prepare(
-    "UPDATE NHANVIEN SET HOTENNV = ?,CHUCVU = ?,DIACHI = ?,SODIENTHOAI = ? WHERE MSNV = ?"
+    "UPDATE nhanvien SET HOTENNV = ?,CHUCVU = ?,DIACHI = ?,SODIENTHOAI = ? WHERE MSNV = ?"
   );
   $name = $staff->getName();
   $position = $staff->getPosition();
@@ -88,7 +88,7 @@ function updateStaff($staff){
   }
 }
   function deleteStaff($orderStaff){
-    $prepare = $GLOBALS["connect"]->prepare("DELETE FROM NHANVIEN WHERE MSNV = ?");
+    $prepare = $GLOBALS["connect"]->prepare("DELETE FROM nhanvien WHERE MSNV = ?");
     $prepare->bind_param("i",$orderStaff);
     if($prepare->execute()){
       return true;

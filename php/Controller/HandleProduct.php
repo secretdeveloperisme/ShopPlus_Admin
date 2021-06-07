@@ -22,7 +22,7 @@
     }
   }
   function isExistProduct($id){
-    $result = $GLOBALS["connect"]->query("SELECT MSHH FROM HANGHOA WHERE MSHH = $id");
+    $result = $GLOBALS["connect"]->query("SELECT MSHH FROM hanghoa WHERE MSHH = $id");
     if(($result->num_rows) > 0)
       return true;
     else 
@@ -70,7 +70,7 @@ function insertProduct($product){
 }
 function updateProduct($product){
   $prepare = $GLOBALS["connect"]->prepare("
-        UPDATE HANGHOA 
+        UPDATE hanghoa 
         SET TENHH = ? , LOCATION = ?, QUYCACH = ?, GIA = ? ,SOLUONGHANG = ?, MALOAIHANG = ?, GHICHU = ?
         WHERE MSHH = ?
    ");
@@ -96,7 +96,7 @@ function updateProduct($product){
 }
 function updateProductWithoutLocation($product){
   $prepare = $GLOBALS["connect"]->prepare("
-        UPDATE HANGHOA 
+        UPDATE hanghoa 
         SET TENHH = ? ,QUYCACH = ?, GIA = ? ,SOLUONGHANG = ?, MALOAIHANG = ?, GHICHU = ?
         WHERE MSHH = ?
    ");
@@ -120,14 +120,14 @@ function updateProductWithoutLocation($product){
   }
 }
   function deleteProduct($productID){
-    $result = $GLOBALS["connect"]->query("DELETE FROM HANGHOA WHERE MSHH = $productID");
+    $result = $GLOBALS["connect"]->query("DELETE FROM hanghoa WHERE MSHH = $productID");
     return $result;
   }
   function getCategoryWithIdProduct($id)
   {
     $result = $GLOBALS["connect"]->query("
-        SELECT TENLOAIHANG FROM LOAIHANGHOA
-        INNER JOIN HANGHOA ON LOAIHANGHOA.MALOAIHANG = HANGHOA.MALOAIHANG
+        SELECT TENLOAIHANG FROM loaihanghoa
+        INNER JOIN hanghoa ON loaihanghoa.MALOAIHANG = hanghoa.MALOAIHANG
         WHERE MSHH = $id
     ");
     if ($result->num_rows > 0) {

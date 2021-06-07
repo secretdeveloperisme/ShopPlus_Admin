@@ -6,7 +6,7 @@
   $connect = connectDB();
   function getAllCustomers(){
     $result = $GLOBALS["connect"]->query(
-      "SELECT MSKH,HOTENKH,TENCONGTY,SODIENTHOAI,EMAIL FROM KHACHHANG");
+      "SELECT MSKH,HOTENKH,TENCONGTY,SODIENTHOAI,EMAIL FROM khachhang");
     $customers = array();
     if($result->num_rows > 0){
       while ($row = $result->fetch_assoc()){
@@ -24,7 +24,7 @@
   }
   function getCustomerViaEmail($email){
     $result = $GLOBALS["connect"]->query(
-      "SELECT MSKH,HOTENKH,TENCONGTY,SODIENTHOAI,EMAIL FROM KHACHHANG WHERE EMAIL= '$email'");
+      "SELECT MSKH,HOTENKH,TENCONGTY,SODIENTHOAI,EMAIL FROM khachhang WHERE EMAIL= '$email'");
     if($result->num_rows > 0){
       $row = $result->fetch_assoc();
       return new Customer(
@@ -38,7 +38,7 @@
   }
   function getCustomerViaID($id){
     $result = $GLOBALS["connect"]->query(
-      "SELECT MSKH,HOTENKH,TENCONGTY,SODIENTHOAI,EMAIL FROM KHACHHANG WHERE MSKH = $id");
+      "SELECT MSKH,HOTENKH,TENCONGTY,SODIENTHOAI,EMAIL FROM khachhang WHERE MSKH = $id");
     if($result->num_rows > 0){
       $row = $result->fetch_assoc();
       return new Customer(
@@ -52,7 +52,7 @@
   }
   function isExistCustomer($email){
     $result = $GLOBALS["connect"]->query(
-      "SELECT * FROM KHACHHANG WHERE EMAIL = '$email'"
+      "SELECT * FROM khachhang WHERE EMAIL = '$email'"
     );
     if($result->num_rows > 0){
       return true;
@@ -62,7 +62,7 @@
   }
   function isExistEmailAnotherAccount($email,$id){
     $result = $GLOBALS["connect"]->query(
-      "SELECT * FROM KHACHHANG WHERE EMAIL = '$email' and MSKH != $id"
+      "SELECT * FROM khachhang WHERE EMAIL = '$email' and MSKH != $id"
     );
     if($result->num_rows == 0){
       return false;
@@ -71,7 +71,7 @@
       return true;
     }
   function insertCustomer($customer){
-    $prepare = $GLOBALS["connect"]->prepare("INSERT INTO KHACHHANG(HOTENKH,TENCONGTY,SODIENTHOAI,EMAIL)VALUES(?,?,?,?)");
+    $prepare = $GLOBALS["connect"]->prepare("INSERT INTO khachhang(HOTENKH,TENCONGTY,SODIENTHOAI,EMAIL)VALUES(?,?,?,?)");
     $name = $customer->getName();
     $companyName = $customer->getCompanyName();
     $phone = $customer->getPhone();
@@ -90,7 +90,7 @@
   }
   function updateCustomer($customer){
     $prepare = $GLOBALS["connect"]->prepare(
-      "UPDATE KHACHHANG SET HOTENKH = ?,TENCONGTY = ?,SODIENTHOAI = ?,EMAIL = ? WHERE MSKH = ?"
+      "UPDATE khachhang SET HOTENKH = ?,TENCONGTY = ?,SODIENTHOAI = ?,EMAIL = ? WHERE MSKH = ?"
     );
     $name = $customer->getName();
     $companyName = $customer->getCompanyName();
@@ -110,7 +110,7 @@
     }
   }
   function clearAddress($customerID){
-    $prepare = $GLOBALS["connect"]->prepare("DELETE FROM DIACHIKH WHERE MSKH = ?");
+    $prepare = $GLOBALS["connect"]->prepare("DELETE FROM diachikh WHERE MSKH = ?");
     $prepare->bind_param("i",$customerID);
     if($prepare->execute()){
       return true;
@@ -121,7 +121,7 @@
 
   }
   function deleteCustomer($customerID){
-    $prepare = $GLOBALS["connect"]->prepare("DELETE FROM KHACHHANG WHERE MSKH = ?");
+    $prepare = $GLOBALS["connect"]->prepare("DELETE FROM khachhang WHERE MSKH = ?");
     $prepare->bind_param("i",$customerID);
     if(clearAddress($customerID)){
       if($prepare->execute()){

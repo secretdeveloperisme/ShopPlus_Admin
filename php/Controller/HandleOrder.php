@@ -7,7 +7,7 @@
   $connect = connectDB();
   function getAllOrderWithLimit($begin,$end){
     $orders = array();
-    $allOrderQuery = "SELECT * FROM DATHANG LIMIT $begin,$end";
+    $allOrderQuery = "SELECT * FROM dathang LIMIT $begin,$end";
     $result = $GLOBALS["connect"]->query($allOrderQuery);
     if($result->num_rows > 0){
       while ($row = $result->fetch_assoc()){
@@ -23,7 +23,7 @@
   }
   function insertOrder($order){
     $insertId = 0;
-    $prepare = $GLOBALS["connect"]->prepare("INSERT INTO DATHANG(MSKH,NGAYDH,TRANGTHAI) VALUES (?,?,?)");
+    $prepare = $GLOBALS["connect"]->prepare("INSERT INTO dathang(MSKH,NGAYDH,TRANGTHAI) VALUES (?,?,?)");
     $idCustomer = $order->getIdCustomer();
     $orderDate = $order->getOrderDate();
     $status = $order->getStatus();
@@ -37,7 +37,7 @@
     }
   }
   function insertOrderDetail($orderDetail){
-    $prepare = $GLOBALS["connect"]->prepare("INSERT INTO CHITIETDATHANG(SODONDH,MSHH,SOLUONG,GIADATHANG,GIAMGIA) VALUES (?,?,?,?,?)");
+    $prepare = $GLOBALS["connect"]->prepare("INSERT INTO chitietdathang(SODONDH,MSHH,SOLUONG,GIADATHANG,GIAMGIA) VALUES (?,?,?,?,?)");
     $orderId = $orderDetail->getOrderId();
     $orderMerchandiseId = $orderDetail->getIdMerchandise();
     $product = getProductViaID($orderMerchandiseId);
@@ -106,7 +106,7 @@
     return $result->fetch_assoc()["total"];
   }
   function updateOrderViaStaff($order){
-    $prepare = $GLOBALS["connect"]->prepare("UPDATE DATHANG SET MSNV = ?,NGAYGH =?,TRANGTHAI = ? WHERE SODONDH = ?");
+    $prepare = $GLOBALS["connect"]->prepare("UPDATE dathang SET MSNV = ?,NGAYGH =?,TRANGTHAI = ? WHERE SODONDH = ?");
     $orderID = $order->getId();
     $staffID = $order->getIdStaff();
     $deliverDate = $order->getDeliverDate();
@@ -122,7 +122,7 @@
 
   }
   function deleteOrderDetail($orderID){
-    $prepare = $GLOBALS["connect"]->prepare("DELETE FROM CHITIETDATHANG WHERE SODONDH = ?");
+    $prepare = $GLOBALS["connect"]->prepare("DELETE FROM chitietdathang WHERE SODONDH = ?");
     $prepare->bind_param("i",$orderID);
     if($prepare->execute()){
       return true;
@@ -132,7 +132,7 @@
     }
   }
   function deleteOrder($orderID){
-    $prepare = $GLOBALS["connect"]->prepare("DELETE FROM DATHANG WHERE SODONDH = ?");
+    $prepare = $GLOBALS["connect"]->prepare("DELETE FROM dathang WHERE SODONDH = ?");
     $prepare->bind_param("i",$orderID);
     if(deleteOrderDetail($orderID)){
       if($prepare->execute()){

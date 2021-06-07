@@ -5,7 +5,7 @@
   global $connect ;
   $connect = connectDB();
   function insertCategory($category){
-    $prepare = $GLOBALS["connect"]->prepare("INSERT INTO LOAIHANGHOA(TENLOAIHANG) VALUES(?)");
+    $prepare = $GLOBALS["connect"]->prepare("INSERT INTO loaihanghoa(TENLOAIHANG) VALUES(?)");
     $name = $category->getName();
     $prepare->bind_param("s",$name);
     if($prepare->execute()){
@@ -22,17 +22,17 @@
   function updateCategory($category){
     $id = $category->getId();
     $name = $category->getName();
-    $result = $GLOBALS["connect"]->query("UPDATE LOAIHANGHOA SET TENLOAIHANG = '$name' WHERE MALOAIHANG = $id");
+    $result = $GLOBALS["connect"]->query("UPDATE loaihanghoa SET TENLOAIHANG = '$name' WHERE MALOAIHANG = $id");
     return $result;
   }
   function deleteCategory($category){
     $id = $category->getId();
-    $result = $GLOBALS["connect"]->query("DELETE FROM LOAIHANGHOA WHERE MALOAIHANG = $id");
+    $result = $GLOBALS["connect"]->query("DELETE FROM loaihanghoa WHERE MALOAIHANG = $id");
     return $result;
   }
   function getAllCategories(){
     $categories = array();
-    $result = $GLOBALS["connect"]->query("SELECT MALOAIHANG,TENLOAIHANG FROM LOAIHANGHOA");
+    $result = $GLOBALS["connect"]->query("SELECT MALOAIHANG,TENLOAIHANG FROM loaihanghoa");
     if($result->num_rows > 0){
       while($row = $result->fetch_assoc()){
         $address = new Category($row["MALOAIHANG"],$row["TENLOAIHANG"]);
@@ -43,7 +43,7 @@
   }
   function getNumberOfCategory(){
     $numberOfCategory = 0;
-    $result = $GLOBALS["connect"]->query("SELECT MALOAIHANG FROM LOAIHANGHOA ");
+    $result = $GLOBALS["connect"]->query("SELECT MALOAIHANG FROM loaihanghoa ");
     if($result->num_rows > 0){
       $numberOfCategory = $result->num_rows;
     }
@@ -52,8 +52,8 @@
   function getCategoryWithIdProduct($id)
   {
     $result = $GLOBALS["connect"]->query("
-          SELECT TENLOAIHANG FROM LOAIHANGHOA
-          INNER JOIN HANGHOA ON LOAIHANGHOA.MALOAIHANG = HANGHOA.MALOAIHANG
+          SELECT TENLOAIHANG FROM loaihanghoa
+          INNER JOIN HANGHOA ON loaihanghoa.MALOAIHANG = hanghoa.MALOAIHANG
           WHERE MSHH = $id
       ");
     if ($result->num_rows > 0) {
