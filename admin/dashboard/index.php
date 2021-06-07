@@ -1,6 +1,7 @@
 <?php
   session_start();
-  include "../../php/Controller/HandleStaff.php";
+  include_once "../../php/Controller/HandleStaff.php";
+  $staff = getStaffViaID($_SESSION["id"]);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -15,43 +16,14 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
   <link rel="stylesheet" href="../../assets/css/base.css">
   <title>DashBoard</title>
+  <style>
+    .bg-c-lite-green {
+      background: -webkit-gradient(linear, left top, right top, from(#f29263), to(#ee5a6f));
+      background: linear-gradient(to right, #ee5a6f, #f29263)
+    } 
+  </style>
 </head>
-
 <body>
-  <div class="modal" id="addModal">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h4 class="modal-title">Thêm Sản Phẩm</h4>
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-        </div>
-        <div class="modal-body">
-          <input type="text" name="" id="" class="form-control">
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-success">Thêm</button>
-          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="modal" id="editModal">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h4 class="modal-title">Sửa Loại Hàng Hóa</h4>
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-        </div>
-        <div class="modal-body">
-          <input type="text" name="" id="" class="form-control">
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-success">Sửa</button>
-          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-        </div>
-      </div>
-    </div>
-  </div>
   <div class="container-fluid">
     <div class="row">
       <div class="col-xl-2 bg-dark sidebar p-2">
@@ -67,7 +39,35 @@
           </ul>
         </div>
       </div>
-      <div role="main" class="col-xl-10 sidebar-content container-fluid p-2">
+      <div role="main" class="col-xl-10 sidebar-content container-fluid p-0">
+        <div class="profile row p-0 col-10 shadow-sm ml-2 mt-2" style="border-radius: 5px; overflow: hidden;">
+          <div class="container-fluid d-flex flex-column align-items-center bg-c-lite-green col-5 p-5">
+            <img src="../../assets/images/user.png"  alt="">
+            <div><?php echo $staff->getName()?></div>
+          </div>
+          <div class="container-fluid col-7 pl-3 pr-3">
+            <div class="font-weight-bolder">Information</div>
+            <div class="border-primary" style="border:2px solid"></div>
+            <div class="pt-2">
+              <div class="font-italic text-primary" >
+                Chức Vụ
+              </div>
+              <div class="ml-3 text-black-50" ><?php echo $staff->getPosition()?></div>
+            </div>
+            <div class="pt-2">
+              <div class="font-italic text-primary" >
+                Địa Chỉ: 
+              </div>
+              <div class="ml-3 text-black-50"><?php echo $staff->getAddress()?></div>
+            </div>
+            <div class="pt-2">
+              <div class="font-italic text-primary" >
+                Số Điên Thoại
+              </div>
+              <div class="ml-3 text-black-50"><?php echo $staff->getPhone()?></div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
