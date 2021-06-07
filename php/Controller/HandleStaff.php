@@ -18,6 +18,24 @@
     else
       return false;
   }
+  function getAllStaffs(){
+    $result = $GLOBALS["connect"]->query(
+      "SELECT MSNV,HOTENNV,CHUCVU,DIACHI,SODIENTHOAI FROM NHANVIEN");
+    $staffs = array();
+    if($result->num_rows > 0){
+      while ($row = $result->fetch_assoc()){
+        $staff = new Staff(
+          $row["MSNV"],
+          $row['HOTENNV'],$row["CHUCVU"],
+          $row["DIACHI"],$row["SODIENTHOAI"]
+        );
+        array_push($staffs,$staff->toArray());
+      }
+      return $staffs;
+    }
+    else
+      return false;
+  }
   function isExistStaff($id){
     $prepare = $GLOBALS["connect"]->prepare("SELECT STAFF_LOGIN(?) AS VALID");
     $prepare->bind_param("i",$id);
@@ -69,4 +87,14 @@ function updateStaff($staff){
     return false;
   }
 }
+  function deleteStaff($orderStaff){
+    $prepare = $GLOBALS["connect"]->prepare("DELETE FROM NHANVIEN WHERE MSNV = ?");
+    $prepare->bind_param("i",$orderStaff);
+    if($prepare->execute()){
+      return true;
+    }
+    else{
+      return false;
+    }
+  }
 ?>
