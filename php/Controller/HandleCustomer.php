@@ -4,6 +4,24 @@
   include($rootPath."/ShopPlus_Admin/php/ConnectDB.php");
   global $connect;
   $connect = connectDB();
+  function getAllCustomers(){
+    $result = $GLOBALS["connect"]->query(
+      "SELECT MSKH,HOTENKH,TENCONGTY,SODIENTHOAI,EMAIL FROM KHACHHANG");
+    $customers = array();
+    if($result->num_rows > 0){
+      while ($row = $result->fetch_assoc()){
+        $customer = new Customer(
+          $row["MSKH"],
+          $row['HOTENKH'],$row["TENCONGTY"],
+          $row["SODIENTHOAI"],$row["EMAIL"]
+        );
+        array_push($customers,$customer->toArray());
+      }
+      return $customers;
+    }
+    else
+      return false;
+  }
   function getCustomerViaEmail($email){
     $result = $GLOBALS["connect"]->query(
       "SELECT MSKH,HOTENKH,TENCONGTY,SODIENTHOAI,EMAIL FROM KHACHHANG WHERE EMAIL= '$email'");
@@ -70,25 +88,50 @@
       return false;
     }
   }
-function updateCustomer($customer){
-  $prepare = $GLOBALS["connect"]->prepare(
-    "UPDATE KHACHHANG SET HOTENKH = ?,TENCONGTY = ?,SODIENTHOAI = ?,EMAIL = ? WHERE MSKH = ?"
-  );
-  $name = $customer->getName();
-  $companyName = $customer->getCompanyName();
-  $phone = $customer->getPhone();
-  $email = $customer->getEmail();
-  $id = $customer->getId();
-  $prepare->bind_param("ssssi",$name,$companyName,$phone,$email,$id);
-  if($prepare->execute()){
-    $prepare->close();
-    $GLOBALS["connect"]->close();
-    return true;
+  function updateCustomer($customer){
+    $prepare = $GLOBALS["connect"]->prepare(
+      "UPDATE KHACHHANG SET HOTENKH = ?,TENCONGTY = ?,SODIENTHOAI = ?,EMAIL = ? WHERE MSKH = ?"
+    );
+    $name = $customer->getName();
+    $companyName = $customer->getCompanyName();
+    $phone = $customer->getPhone();
+    $email = $customer->getEmail();
+    $id = $customer->getId();
+    $prepare->bind_param("ssssi",$name,$companyName,$phone,$email,$id);
+    if($prepare->execute()){
+      $prepare->close();
+      $GLOBALS["connect"]->close();
+      return true;
+    }
+    else{
+      $prepare->close();
+      $GLOBALS["connect"]->close();
+      return false;
+    }
   }
-  else{
-    $prepare->close();
-    $GLOBALS["connect"]->close();
-    return false;
+  function clearAddress($customerID){
+    $prepare = $GLOBALS["connect"]->prepare("DELETE FROM DIACHIKH WHERE MSKH = ?");
+    $prepare->bind_param("i",$customerID);
+    if($prepare->execute()){
+      return true;
+    }
+    else{
+      return false;
+    }
+
   }
-}
+  function deleteCustomer($customerID){
+    $prepare = $GLOBALS["connect"]->prepare("DELETE FROM KHACHHANG WHERE MSKH = ?");
+    $prepare->bind_param("i",$customerID);
+    if(clearAddress($customerID)){
+      if($prepare->execute()){
+        return true;
+      }
+      else{
+        return false;
+      }
+    }
+    else
+      return false;
+  }
 ?>

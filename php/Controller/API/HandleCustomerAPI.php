@@ -8,6 +8,10 @@
     if ($_GET["action"] == "isExistCustomer" && isset($_GET["email"]) && !empty($_GET["email"])) {
       echo json_encode(isExistCustomer($_GET["email"]));
     }
+    if ($_GET["action"] == "getAllCustomers") {
+      echo json_encode(getAllCustomers());
+    }
+
   }
   if(isset($_POST["action"])&& !empty($_POST["action"])){
     include("../../Controller/HandleCustomer.php");
@@ -38,6 +42,11 @@
             echo json_encode(array("status"=> "failed","msg"=>"email đã tồn tại"));
          }
         }
+    }
+    if ($_POST["action"] == "deleteCustomer"){
+      if(isset($_POST["customerID"])&&!empty($_POST["customerID"])){
+        echo json_encode(deleteCustomer($_POST["customerID"]));
+      }
     }
   }
 ?>
