@@ -63,12 +63,12 @@
         <div class="sidebar-sticky">
           <h1 class="text-center text-primary">ShopPlus</h1>
           <ul class="nav flex-column">
-            <li class="nav-item btn-lg"><a href="" class="d-block pl-2 text-white"><i class="fas fa-home"></i><span class="ml-2">Dashboard</span></a></li>
-            <li class="nav-item btn-lg"><a href="" class="d-block pl-2 text-white"><i class="fas fa-file"></i><span class="ml-2">Orders</span></a></li>
-            <li class="nav-item btn-lg"><a href="" class="d-block pl-2 text-white"><i class="fas fa-shopping-cart"></i><span class="ml-2">Products</span></a></li>
-            <li class="nav-item btn-lg bg-primary"><a href="" class="d-block pl-2 text-white"><i class="fas fa-list-ul"></i><span class="ml-2">Category</span></a></li>
-            <li class="nav-item btn-lg"><a href="" class="d-block pl-2 text-white"><i class="fas fa-user"></i><span class="ml-2">Customers</span></a></li>
-            <li class="nav-item btn-lg"><a href="" class="d-block pl-2 text-white"><i class="fas fa-user-tie"></i><span class="ml-2">Staffs</span></a></li>
+            <li class="nav-item btn-lg"><a href="../dashboard" class="d-block pl-2 text-white"><i class="fas fa-home"></i><span class="ml-2">Dashboard</span></a></li>
+            <li class="nav-item btn-lg"><a href="../order" class="d-block pl-2 text-white"><i class="fas fa-file"></i><span class="ml-2">Orders</span></a></li>
+            <li class="nav-item btn-lg"><a href="../product" class="d-block pl-2 text-white"><i class="fas fa-shopping-cart"></i><span class="ml-2">Products</span></a></li>
+            <li class="nav-item btn-lg bg-primary"><div class="d-block pl-2 text-white"><i class="fas fa-list-ul"></i><span class="ml-2">Category</span></div></li>
+            <li class="nav-item btn-lg"><a href="../customer" class="d-block pl-2 text-white"><i class="fas fa-user"></i><span class="ml-2">Customers</span></a></li>
+            <li class="nav-item btn-lg"><a href="../staff" class="d-block pl-2 text-white"><i class="fas fa-user-tie"></i><span class="ml-2">Staffs</span></a></li>
           </ul>
         </div>
       </div>
@@ -81,7 +81,7 @@
           </div>
         </div>
         <table class="table table-striped table-hover" id="categoryTable">
-          <thead>
+          <thead class="bg-primary text-white">
             <tr>
               <th scope="col">Check</th>
               <th scope="col">Mã Loại Hàng</th>
