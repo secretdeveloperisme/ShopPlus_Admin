@@ -18,10 +18,29 @@
         }
       }
     }
+    if ($_POST["action"] == "updateOrderViaStaff"){
+      if(isset($_POST["orderID"])&&!empty($_POST["orderID"])){
+        if(isset($_POST["staffID"])&&!empty($_POST["staffID"])){
+          if(isset($_POST["deliverDate"])&&!empty($_POST["deliverDate"])){
+            if(isset($_POST["status"])&&!empty($_POST["status"])){
+              echo json_encode(updateOrderViaStaff(new Order($_POST["orderID"],0,$_POST["staffID"],"",$_POST["deliverDate"],$_POST["status"])));
+            }
+          }
+        }
+      }
+    }
+    if ($_POST["action"] == "deleteOrder"){
+      if(isset($_POST["orderID"])&&!empty($_POST["orderID"])){
+        echo json_encode(deleteOrder($_POST["orderID"]));
+      }
+    }
   }
   if(isset($_GET["action"]) && !empty($_GET["action"])){
     include "../../models/Customer.php";
     include("../../Controller/HandleOrder.php");
+    if ($_GET["action"] == "getAllOrders"){
+      echo json_encode(getAllOrderWithLimit(1,1000));
+    }
     if ($_GET["action"] == "getOrdersViaCustomer"){
       if(isset($_GET["customerID"]) && !empty($_GET["customerID"])) {
         echo json_encode(getOrderViaCustomer($_GET["customerID"]));
@@ -30,6 +49,11 @@
     if ($_GET["action"] == "getDetailOrdersViaOrderID"){
       if(isset($_GET["orderID"]) && !empty($_GET["orderID"])) {
         echo json_encode(getDetailOrdersViaOrderID($_GET["orderID"]));
+      }
+    }
+    if ($_GET["action"] == "getCalculateMoneyOrder"){
+      if(isset($_GET["orderID"]) && !empty($_GET["orderID"])) {
+        echo json_encode(calculateMoney($_GET["orderID"]));
       }
     }
   }

@@ -5,6 +5,22 @@
   include($rootPath."/ShopPlus_Admin/php/Controller/HandleProduct.php");
   global $connect;
   $connect = connectDB();
+  function getAllOrderWithLimit($begin,$end){
+    $orders = array();
+    $allOrderQuery = "SELECT * FROM DATHANG LIMIT $begin,$end";
+    $result = $GLOBALS["connect"]->query($allOrderQuery);
+    if($result->num_rows > 0){
+      while ($row = $result->fetch_assoc()){
+        $order = new Order(
+          $row["SODONDH"],
+          $row['MSKH'],$row["MSNV"],
+          $row["NGAYDH"],$row["NGAYGH"],$row["TRANGTHAI"]
+        );
+        array_push($orders,$order->toArray());
+      }
+      return $orders;
+    }
+  }
   function insertOrder($order){
     $insertId = 0;
     $prepare = $GLOBALS["connect"]->prepare("INSERT INTO DATHANG(MSKH,NGAYDH,TRANGTHAI) VALUES (?,?,?)");
@@ -84,4 +100,48 @@
       }
     }
     return $orderDetails;
+  }
+  function calculateMoney($id){
+    $result = $GLOBALS["connect"]->query("SELECT calculateMoneyOrder($id) as total");
+    return $result->fetch_assoc()["total"];
+  }
+  function updateOrderViaStaff($order){
+    $prepare = $GLOBALS["connect"]->prepare("UPDATE DATHANG SET MSNV = ?,NGAYGH =?,TRANGTHAI = ? WHERE SODONDH = ?");
+    $orderID = $order->getId();
+    $staffID = $order->getIdStaff();
+    $deliverDate = $order->getDeliverDate();
+    $status = $order->getStatus();
+    $prepare->bind_param("issi",$staffID,$deliverDate,$status,$orderID);
+    if($prepare->execute()){
+      return true;
+    }
+    else{
+      return false;
+    }
+
+
+  }
+  function deleteOrderDetail($orderID){
+    $prepare = $GLOBALS["connect"]->prepare("DELETE FROM CHITIETDATHANG WHERE SODONDH = ?");
+    $prepare->bind_param("i",$orderID);
+    if($prepare->execute()){
+      return true;
+    }
+    else{
+      return false;
+    }
+  }
+  function deleteOrder($orderID){
+    $prepare = $GLOBALS["connect"]->prepare("DELETE FROM DATHANG WHERE SODONDH = ?");
+    $prepare->bind_param("i",$orderID);
+    if(deleteOrderDetail($orderID)){
+      if($prepare->execute()){
+        return true;
+      }
+      else{
+        return false;
+      }
+    }
+    else
+     return false;
   }
