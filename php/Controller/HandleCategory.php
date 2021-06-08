@@ -53,7 +53,7 @@
   {
     $result = $GLOBALS["connect"]->query("
           SELECT TENLOAIHANG FROM loaihanghoa
-          INNER JOIN HANGHOA ON loaihanghoa.MALOAIHANG = hanghoa.MALOAIHANG
+          INNER JOIN hanghoa ON loaihanghoa.MALOAIHANG = hanghoa.MALOAIHANG
           WHERE MSHH = $id
       ");
     if ($result->num_rows > 0) {
