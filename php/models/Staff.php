@@ -4,11 +4,13 @@
     private $id;
     private $position;
     private $address;
-    public function __construct($id,$name,$position,$address,$phone){
+    private $password;
+    public function __construct($id,$name,$password,$position,$address,$phone){
       parent::__construct($name,$phone);
       $this->id = $id;
       $this->position = $position;
       $this->address = $address;
+      $this->password = $password;
     }
     public function getId(){
       return $this->id;
@@ -28,10 +30,18 @@
     public function setAddress($address){
       $this->address = $address;
     }
+    public function getPassword() {
+      return $this->password;
+    }
+    public function setPassword($password) {
+      $this->password = $password;
+    }
+
     public function toArray(){
       return array(
         "id" => $this->getId(),
         "name" => parent::getName(),
+        "password" =>$this->getPassword(),
         "position" => $this->getPosition(),
         "address" => $this->getAddress(),
         "phone" => parent::getPhone()

@@ -1,12 +1,18 @@
 <?php
   session_start();
+  $userName = $password = "";
   if(isset($_POST["userName"])){
-    include "php/Controller/HandleStaff.php";
-    $valid = isExistStaff($_POST["userName"]);
-    if($valid == true){
+    $userName = $_POST["userName"];
+    if(isset($_POST["password"])){
+      $password = $_POST["password"];
+      include "php/Controller/HandleStaff.php";
+      $valid = isValidLogin($_POST["userName"],$_POST["password"]);
+      if($valid == true){
         $_SESSION["id"] = $_POST["userName"];
         header("Location: admin/dashboard/index.php");
+      }
     }
+
   }
 ?>
 <!DOCTYPE html>
@@ -30,13 +36,11 @@
       <h1>Đăng Nhập</h1>
       <div class="form-group mb-3 d-flex flex-column w-100">
         <label for="userName" class="">Mã số Nhân Viên</label>
-        <input type="text" name="userName" id="userName" class="form-control" required> 
-        <div class="valid-feedback">Valid.</div>
-        <div class="invalid-feedback">Please fill out this field.</div>
+        <input type="text" name="userName" id="userName" class="form-control" required value="<?php echo $userName?>">
       </div>
       <div class="form-group mb-3 d-flex w-500 flex-column w-100">
         <label for="password">Mật Khẩu</label>
-        <input type="text" name="password" id="password" class="form-control" disabled> 
+        <input type="password" name="password" id="password" class="form-control" required value="<?php echo $password?>">
       </div>
       <button class="btn btn-primary w-50 ">Đăng Nhập</button>
     </form>
