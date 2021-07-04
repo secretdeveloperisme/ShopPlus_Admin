@@ -25,7 +25,7 @@
                 }
                 if($statusUpload == 1)
                   if(move_uploaded_file($_FILES["imageAddProduct"]["tmp_name"],$_SERVER['DOCUMENT_ROOT'].$targetFile)){
-                    echo json_encode(insertProduct(new Merchandise(0,$_POST["name"],$targetFile,$_POST["unit"],$_POST["price"],$_POST["amount"],$_POST["categoryID"],"")));
+                    echo json_encode(insertProduct(new Merchandise(0,$_POST["name"],$targetFile,$_POST["unit"],$_POST["price"],$_POST["amount"],$_POST["categoryID"],$_POST["description"])));
                   }
               }
             }
@@ -50,17 +50,17 @@
                     $statusUpload = 1;
                     if (file_exists($targetFile)) {
                       $statusUpload = 0;
-                      echo json_encode(updateProduct(new Merchandise($_POST["id"],$_POST["name"],$targetFile,$_POST["unit"],$_POST["price"],$_POST["amount"],$_POST["categoryID"],"")));
+                      echo json_encode(updateProduct(new Merchandise($_POST["id"],$_POST["name"],$targetFile,$_POST["unit"],$_POST["price"],$_POST["amount"],$_POST["categoryID"],$_POST["description"])));
                     }
                     if($statusUpload == 1)
                       if(move_uploaded_file($_FILES["imgEditProduct"]["tmp_name"],$_SERVER['DOCUMENT_ROOT'].$targetFile)){
-                        echo json_encode(updateProduct(new Merchandise($_POST["id"],$_POST["name"],$targetFile,$_POST["unit"],$_POST["price"],$_POST["amount"],$_POST["categoryID"],"")));
+                        echo json_encode(updateProduct(new Merchandise($_POST["id"],$_POST["name"],$targetFile,$_POST["unit"],$_POST["price"],$_POST["amount"],$_POST["categoryID"],$_POST["description"])));
                       }
                     else
                       echo "false";
                   }
                   else{
-                    echo json_encode(updateProductWithoutLocation(new Merchandise($_POST["id"],$_POST["name"],"",$_POST["unit"],$_POST["price"],$_POST["amount"],$_POST["categoryID"],"")));
+                    echo json_encode(updateProductWithoutLocation(new Merchandise($_POST["id"],$_POST["name"],"",$_POST["unit"],$_POST["price"],$_POST["amount"],$_POST["categoryID"],$_POST["description"])));
                   }
 
                 }

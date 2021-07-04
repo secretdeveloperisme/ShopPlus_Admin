@@ -47,7 +47,11 @@
                   <input type="number" name="amount" id="amountAddProduct" class="form-control">
                 </div>
             </div>
-            <div class="col-xl-5 p-xl-5">
+            <div class="col-xl-5 ">
+              <div class="form-group">
+                <label for="">Mô Tả</label>
+                <textarea name="description" id="descriptionAddProduct" class="form-control" ></textarea>
+              </div>
               <select name="categoryID" id="categoryAddProduct" class="custom-select mb-3">
                 <option value="">Loại Hàng</option>
               </select>
@@ -99,7 +103,11 @@
                 <input type="number" name="amount" id="amountEditProduct" class="form-control">
               </div>
             </div>
-            <div class="col-xl-5 p-xl-5">
+            <div class="col-xl-5">
+              <div class="form-group">
+                <label for="">Mô Tả</label>
+                <textarea name="description" id="descriptionEditProduct" class="form-control"></textarea>
+              </div>
               <select name="categoryID" id="categoryEditProduct" class="custom-select mb-3">
                 <option value="">Loại Hàng</option>
               </select>

@@ -27,6 +27,7 @@ $(()=>{
   //
 
   let $editModal = $("#editProductModal")
+  let $addModal = $("#addProductModal")
   let $productTable = $("#productTable")
   let $categoryBody = $productTable.find("tbody")
   //render category Table
@@ -58,7 +59,7 @@ $(()=>{
             }
           })
           let row =`
-         <tr rowID="${value.id}">
+         <tr rowID="${value.id}" title="${value.note}">
             <td scope="row"><input type="checkbox" class="custom-checkbox" productID="${value.id}"></td>
             <td role="id">${value.id}</td>
             <td role="name">${value.name}</td>
@@ -124,6 +125,7 @@ $(()=>{
             duration : 5000
           })
           renderProductTable()
+          addForm.reset()
         }
         else
           toast({
@@ -147,6 +149,7 @@ $(()=>{
       let amount = $tdBtnEdit.siblings("[role=amount]").text()
       let categoryID = $tdBtnEdit.siblings("[role=categoryID]").attr("categoryID")
       let unit = $tdBtnEdit.siblings("[role=unit]").text().trim()
+      let description = $tdBtnEdit.parent().attr("title")
       $(element).on("click",(event)=>{
         $editModal.prop("productID",id);
         $("#nameEditProduct").val(name)
@@ -154,6 +157,7 @@ $(()=>{
         $displayEditFile.attr("src",location)
         $("#amountEditProduct").val(amount)
         setSelectedValue($("#categoryEditProduct")[0],categoryID)
+        $("#descriptionEditProduct").val(description)
       })
     })
   }

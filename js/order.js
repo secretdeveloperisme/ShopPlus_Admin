@@ -30,7 +30,7 @@ $(()=> {
             case "completed" :
               selectCompleted = "selected"
               break
-            case "cancelled" :
+            case "canceled" :
               selectCancelled = "selected"
               break
 
@@ -63,7 +63,7 @@ $(()=> {
                     <option ${selectApproved} value="approved">Đã Duyêt</option>
                     <option ${selectProcessing} value="processing">Đang Xữ lý</option>
                     <option ${selectCompleted} value="completed">Đã Giao</option>
-                    <option ${selectCancelled} value="cancelled">Đã Hũy</option>
+                    <option ${selectCancelled} value="canceled">Đã Hũy</option>
                   </select>
                 </td>
                 <td role="save"><button type="button" class="btn btn-info">Save</button></td>
@@ -99,6 +99,7 @@ $(()=> {
           },
           dataType : "text",
           success : (response)=>{
+            console.log(response)
             if(JSON.parse(response)){
               toast({
                 title : "Thành Công",
