@@ -2,6 +2,41 @@
   session_start();
   include_once "../../php/Controller/HandleStaff.php";
   $staff = getStaffViaID($_SESSION["id"]);
+  $amountOfProduct = $amountOfCustomer = $amountOfNewOrder = 0;
+
+  $result = $GLOBALS["connect"]->query("
+        SELECT COUNT(*) as AMOUNT FROM hanghoa
+  ");
+  if ($result->num_rows > 0) {
+    $row = $result->fetch_assoc();
+    $amountOfProduct = $row["AMOUNT"];
+  }
+  $result = $GLOBALS["connect"]->query("
+        SELECT COUNT(*) as AMOUNT FROM khachhang
+  ");
+  if ($result->num_rows > 0) {
+    $row = $result->fetch_assoc();
+    $amountOfCustomer = $row["AMOUNT"];
+  }
+  $result = $GLOBALS["connect"]->query("
+        SELECT COUNT(*) as AMOUNT FROM dathang WHERE TRANGTHAI = 'pending'
+  ");
+  if ($result->num_rows > 0) {
+    $row = $result->fetch_assoc();
+    $amountOfNewOrder = $row["AMOUNT"];
+  } 
+  $topProducts = array();
+  $allProductQuery = "SELECT hanghoa.TENHH AS `NAME`,sum(`chitietdathang`.`SOLUONG`) AS `AMOUNT` FROM `chitietdathang` JOIN hanghoa ON chitietdathang.MSHH = hanghoa.MSHH GROUP BY `chitietdathang`.`MSHH` ORDER BY sum(`chitietdathang`.`SOLUONG`) DESC LIMIT 0, 10 ";
+  $result = $GLOBALS["connect"]->query($allProductQuery);
+  if($result->num_rows > 0){
+    while ($row = $result->fetch_assoc()){
+      $merchandise = array(
+        $row["NAME"],
+        $row['AMOUNT']
+      );
+      array_push($topProducts,$merchandise);
+    }
+  }  
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -39,7 +74,7 @@
           </ul>
         </div>
       </div>
-      <div role="main" class="col-xl-10 sidebar-content container-fluid p-0">
+      <div role="main" class="col-xl-10 sidebar-content container-fluid p-1">
         <div class="profile row p-0 col-10 shadow-sm ml-2 mt-2" style="border-radius: 5px; overflow: hidden;">
           <div class="container-fluid d-flex flex-column align-items-center bg-c-lite-green col-5 p-5">
             <img src="../../assets/images/user.png"  alt="">
@@ -67,6 +102,61 @@
               <div class="ml-3 text-black-50"><?php echo $staff->getPhone()?></div>
             </div>
           </div>
+        </div>
+        <div class="row p-2 m-0">
+          <div class="col-xl-3 text-white">
+            <div class="position-relative container-fluid bg-info rounded-lg">
+              <div>
+              <h1><?php echo $amountOfNewOrder?></h1>
+              <h2>new order</h2>
+            </div>
+            <div class="position-absolute" style="top: 32px; right: 10px;">
+              <i class="fas fa-shopping-cart" style="font-size: 50px;"></i>
+            </div>
+            </div>
+          </div>
+          <div class="col-xl-3 text-white">
+            <div class="position-relative container-fluid bg-success rounded-lg">
+              <div>
+              <h1><?php echo $amountOfProduct ?></h1>
+              <h2>product</h2>
+            </div>
+            <div class="position-absolute" style="top: 32px; right: 10px;">
+              <i class="fas fa-shopping-cart" style="font-size: 50px;"></i>
+            </div>
+            </div>
+          </div>
+          <div class="col-xl-3 text-white">
+            <div class="position-relative container-fluid bg-warning rounded-lg">
+              <div>
+              <h1><?php echo $amountOfCustomer ?></h1>
+              <h2>customer</h2>
+            </div>
+            <div class="position-absolute" style="top: 32px; right: 10px;">
+              <i class="fas fa-shopping-cart" style="font-size: 50px;"></i>
+            </div>
+            </div>
+          </div>
+        </div>
+        <div class="container-fluid">
+          <h1 class="text-center font-weight-bolder text-primary">top 10 sản phẩm bán chạy</h1>
+          <ul class="list-group">
+            <?php
+              foreach ($topProducts as $topProduct){
+                $name = $topProduct[0];
+                $amount = $topProduct[1];
+
+                echo <<<ABC
+                  <li class="list-group-item d-flex justify-content-between align-items-center">
+                  {$name}
+                  <span class="badge badge-primary badge-pill">{$amount}</span>
+                  </li>
+                ABC;
+
+              }
+            ?>
+            
+          </ul>
         </div>
       </div>
     </div>
