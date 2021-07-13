@@ -122,7 +122,7 @@
               <h2>product</h2>
             </div>
             <div class="position-absolute" style="top: 32px; right: 10px;">
-              <i class="fas fa-shopping-cart" style="font-size: 50px;"></i>
+              <i class="fas fa-box" style="font-size: 50px;"></i>
             </div>
             </div>
           </div>
@@ -133,7 +133,7 @@
               <h2>customer</h2>
             </div>
             <div class="position-absolute" style="top: 32px; right: 10px;">
-              <i class="fas fa-shopping-cart" style="font-size: 50px;"></i>
+              <i class="fas fa-users" style="font-size: 50px;"></i>
             </div>
             </div>
           </div>
