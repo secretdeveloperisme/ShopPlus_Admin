@@ -19,19 +19,25 @@
               if(isset($_POST["categoryID"])&&!empty($_POST["categoryID"])){
                 $targetDir = "/ShopPlus_Customer/assets/images/products/";
                 $targetFile  = $targetDir.basename($_FILES["imageAddProduct"]["name"]);
-                $statusUpload = 1;
-                if (file_exists($targetFile)) {
-                  $statusUpload = 0;
+                $isExistFile = 0;
+                if (file_exists($_SERVER['DOCUMENT_ROOT'].$targetFile)) {
+                  $isExistFile = 1;
                 }
-                if($statusUpload == 1)
+                if($isExistFile == 0){
                   if(move_uploaded_file($_FILES["imageAddProduct"]["tmp_name"],$_SERVER['DOCUMENT_ROOT'].$targetFile)){
-                    echo json_encode(insertProduct(new Merchandise(0,$_POST["name"],$targetFile,$_POST["unit"],$_POST["price"],$_POST["amount"],$_POST["categoryID"],$_POST["description"])));
+                    $isExistFile = 1; 
                   }
+                }
+                if($isExistFile == 1)
+                  echo json_encode(insertProduct(new Merchandise(0,$_POST["name"],$targetFile,$_POST["unit"],$_POST["price"],$_POST["amount"],$_POST["categoryID"],$_POST["description"])));
+                else
+                  echo false;
+
+                }
               }
             }
           }
         }
-      }
     }
     if ($_POST["action"] == "deleteProduct" && isset($_POST["productID"]) && !empty($_POST["productID"])){
       echo json_encode(deleteProduct($_POST["productID"]));
@@ -45,24 +51,22 @@
                 if(isset($_POST["categoryID"])&&!empty($_POST["categoryID"])){
                   if(!empty($_FILES["imgEditProduct"]["name"]))
                   {
-                    $targetDir = "/ShopPlus_Customer/assets/images/products/";
+                    $targetDir ="/ShopPlus_Customer/assets/images/products/";
                     $targetFile  = $targetDir.basename($_FILES["imgEditProduct"]["name"]);
-                    $statusUpload = 1;
-                    if (file_exists($targetFile)) {
-                      $statusUpload = 0;
-                      echo json_encode(updateProduct(new Merchandise($_POST["id"],$_POST["name"],$targetFile,$_POST["unit"],$_POST["price"],$_POST["amount"],$_POST["categoryID"],$_POST["description"])));
+                    $isExistFile = 0;
+                    if (file_exists($_SERVER['DOCUMENT_ROOT'].$targetFile)) {
+                      $isExistFile = 1;
                     }
-                    if($statusUpload == 1)
+                    if($isExistFile == 0){
                       if(move_uploaded_file($_FILES["imgEditProduct"]["tmp_name"],$_SERVER['DOCUMENT_ROOT'].$targetFile)){
-                        echo json_encode(updateProduct(new Merchandise($_POST["id"],$_POST["name"],$targetFile,$_POST["unit"],$_POST["price"],$_POST["amount"],$_POST["categoryID"],$_POST["description"])));
+                        $isExistFile = 1; 
                       }
+                    }
+                    if($isExistFile == 1)
+                      echo json_encode(updateProduct(new Merchandise($_POST["id"],$_POST["name"],$targetFile,$_POST["unit"],$_POST["price"],$_POST["amount"],$_POST["categoryID"],$_POST["description"])));
                     else
-                      echo "false";
+                      echo false;
                   }
-                  else{
-                    echo json_encode(updateProductWithoutLocation(new Merchandise($_POST["id"],$_POST["name"],"",$_POST["unit"],$_POST["price"],$_POST["amount"],$_POST["categoryID"],$_POST["description"])));
-                  }
-
                 }
               }
             }
